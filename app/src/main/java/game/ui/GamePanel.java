@@ -11,10 +11,24 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements KeyListener, ActionListener {
+    public static final int ROWS = 20;
+    public static final int COLS = 10;
+    public static final int BOX_SIZE = 45;
+    private int topLeftX;
+    private int topLeftY;
+
     private Timer timer;
+    private TetrisPiece currentPiece;
 
     public GamePanel() {
-        timer = new Timer(500, this);
+
+        this.topLeftX = (GameFrame.WINDOW_WIDTH - BOX_SIZE * COLS) / 2;
+        this.topLeftY = (GameFrame.WINDOW_HEIGHT - BOX_SIZE * ROWS) / 2;
+        System.out.println(topLeftX);
+
+        currentPiece = TetrisPiece.randomPiece();
+        timer = new Timer(1000, this);
+        timer.start();
 
         addKeyListener(this);
     }
@@ -27,19 +41,30 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     protected void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
-        int size = Math.min(this.getWidth() - 4, this.getHeight() - 4) / 20;
-        int width = this.getWidth() - (size * 2);
-        int height = this.getHeight() - (size * 2);
 
-        int y = (this.getHeight() - (size * 20)) / 2;
+        int y = topLeftY;
         for (int horz = 0; horz < 20; horz++) {
-            int x = (this.getWidth() - (size * 20)) / 2;
+            int x = topLeftX;
             for (int vert = 0; vert < 10; vert++) {
-                g.drawRect(x, y, size, size);
-                x += size;
+                g2d.drawRect(x, y, BOX_SIZE, BOX_SIZE);
+                x += BOX_SIZE;
             }
-            y += size;
+            y += BOX_SIZE;
         }
+
+        for (int i = 0; i < 4; i++) {
+            for (int j = 0; j < 4; j++) {
+                if (currentPiece.getShape()[i][j]) {
+                    int pieceX = topLeftX + (currentPiece.getX() + j) * BOX_SIZE;
+                    int pieceY = topLeftY + (currentPiece.getY() + i) * BOX_SIZE;
+
+                    g2d.setColor(currentPiece.getColor());
+
+                    g2d.fillRect(pieceX, pieceY, BOX_SIZE, BOX_SIZE);
+                }
+            }
+        }
+
         g2d.dispose();
     }
 
@@ -52,6 +77,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
     }
 
     private void update() {
+        currentPiece.setY(currentPiece.getY() + 1);
 
     }
 
