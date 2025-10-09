@@ -1,11 +1,15 @@
 package game.ui;
 
+import java.awt.CardLayout;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class GameFrame extends JFrame {
 
     private static final int WINDOW_WIDTH = 800;
     private static final int WINDOW_HEIGHT = 600;
+    private CardLayout cardLayout;
+    private JPanel mainPanel;
 
     public GameFrame() {
         // Game title
@@ -23,10 +27,21 @@ public class GameFrame extends JFrame {
         // Center window on screen
         this.setLocationRelativeTo(null);
 
-        GamePanel panel = new GamePanel();
+        cardLayout = new CardLayout();
+        mainPanel = new JPanel(cardLayout);
 
-        this.add(panel);
+        mainPanel.add(new MenuPanel(this), "Menu");
+        mainPanel.add(new GamePanel(), "Game");
+        mainPanel.add(new GameOverPanel(this), "GameOver");
 
+        this.add(mainPanel);
+
+        cardLayout.show(mainPanel, "Menu");
+
+    }
+
+    public void showCard(String cardName) {
+        cardLayout.show(mainPanel, cardName);
     }
 
 }
