@@ -12,10 +12,6 @@ import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements KeyListener, ActionListener {
     private Timer timer;
-    private boolean[][] currentPieceShape = { { false, false, false, false }, { false, false, false, false },
-            { false, false, false, false }, { true, true, true, true } };
-    int cpX = 3;
-    int cpY = 3;
 
     public GamePanel() {
         timer = new Timer(500, this);
