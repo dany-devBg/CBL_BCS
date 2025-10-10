@@ -8,9 +8,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import javax.swing.JPanel;
+import javax.swing.KeyStroke;
 import javax.swing.Timer;
 
-public class GamePanel extends JPanel implements KeyListener, ActionListener {
+import game.input.InputHandler;
+import game.input.InputHandler.MoveLeftAction;
+
+public class GamePanel extends JPanel implements ActionListener {
     public static final int ROWS = 20;
     public static final int COLS = 10;
     public static final int BOX_SIZE = 45;
@@ -19,18 +23,31 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
     private Timer timer;
     private TetrisPiece currentPiece;
+    private InputHandler inputHandler;
 
     public GamePanel() {
 
         this.topLeftX = (GameFrame.WINDOW_WIDTH - BOX_SIZE * COLS) / 2;
         this.topLeftY = (GameFrame.WINDOW_HEIGHT - BOX_SIZE * ROWS) / 2;
-        System.out.println(topLeftX);
 
         currentPiece = TetrisPiece.randomPiece();
         timer = new Timer(1000, this);
         timer.start();
 
-        addKeyListener(this);
+        inputHandler = new InputHandler(this);
+
+        getInputMap(WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke("LEFT"), "moveLeftAction");
+        getActionMap().put("moveLeftAction", inputHandler.new MoveLeftAction(() -> this.getCurrentPiece()));
+
+        getInputMap(WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke("RIGHT"), "moveRightAction");
+        getActionMap().put("moveRightAction",
+                inputHandler.new MoveRightAction(() -> this.getCurrentPiece()));
+
+        getInputMap(WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke("DOWN"), "moveDownAction");
+        getActionMap().put("moveDownAction",
+                inputHandler.new MoveDownAction(() -> this.getCurrentPiece()));
     }
 
     @Override
@@ -81,15 +98,7 @@ public class GamePanel extends JPanel implements KeyListener, ActionListener {
 
     }
 
-    @Override
-    public void keyPressed(KeyEvent e) {
-    }
-
-    @Override
-    public void keyReleased(KeyEvent e) {
-    }
-
-    @Override
-    public void keyTyped(KeyEvent e) {
+    public TetrisPiece getCurrentPiece() {
+        return this.currentPiece;
     }
 }

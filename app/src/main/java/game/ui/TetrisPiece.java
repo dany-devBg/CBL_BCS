@@ -57,4 +57,16 @@ public class TetrisPiece {
         return this.color;
     }
 
+    public void moveDown() {
+        y += 1;
+    }
+
+    public void moveLeft() {
+        x -= 1;
+    }
+
+    public void moveRight() {
+        x += 1;
+    }
+
 }
