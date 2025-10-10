@@ -1,14 +1,13 @@
 package game.ui;
 
 import java.awt.CardLayout;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class GameFrame extends JFrame {
 
-    private static final int WINDOW_WIDTH = 800;
-    private static final int WINDOW_HEIGHT = 600;
+    public static final int WINDOW_WIDTH = 700;
+    public static final int WINDOW_HEIGHT = 1000;
     private CardLayout cardLayout;
     private JPanel mainPanel;
 
