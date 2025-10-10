@@ -69,4 +69,34 @@ public class TetrisPiece {
         x += 1;
     }
 
+    public void rotateCounterClockwise() {
+        int rows = this.shape.length;
+        int cols = this.shape[0].length;
+        boolean[][] rotated = new boolean[rows][cols];
+
+        for (int j = 0; j < rows; j++) {
+            for (int i = 0; i < cols; i++) {
+                boolean value = this.shape[j][i];
+                rotated[rows - 1 - i][j] = value;
+            }
+        }
+
+        this.shape = rotated;
+    }
+
+    public void rotateClockwise() {
+        int rows = this.shape.length;
+        int cols = this.shape[0].length;
+        boolean[][] rotated = new boolean[rows][cols];
+
+        for (int j = 0; j < rows; j++) {
+            for (int i = 0; i < cols; i++) {
+                boolean value = this.shape[j][i];
+                rotated[i][cols - 1 - j] = value;
+            }
+        }
+
+        this.shape = rotated;
+    }
+
 }

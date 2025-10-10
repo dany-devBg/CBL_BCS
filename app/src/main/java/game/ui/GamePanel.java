@@ -26,19 +26,31 @@ public class GamePanel extends JPanel implements ActionListener {
         this.topLeftY = (GameFrame.WINDOW_HEIGHT - BOX_SIZE * ROWS) / 2;
 
         currentPiece = TetrisPiece.randomPiece();
+
         timer = new Timer(1000, this);
         timer.start();
 
         inputHandler = new InputHandler(this);
 
-        inputHandler.bindKey("RIGHT", "moveRightAction", () -> this.getCurrentPiece(), TetrisPiece::moveRight);
-        inputHandler.bindKey("D", "moveRightAction", () -> this.getCurrentPiece(), TetrisPiece::moveRight);
+        inputHandler.bindKey("RIGHT", "moveRightAction",
+                () -> this.getCurrentPiece(), TetrisPiece::moveRight);
+        inputHandler.bindKey("D", "moveRightAction",
+                () -> this.getCurrentPiece(), TetrisPiece::moveRight);
 
-        inputHandler.bindKey("LEFT", "moveLeftAction", () -> this.getCurrentPiece(), TetrisPiece::moveLeft);
-        inputHandler.bindKey("A", "moveLeftAction", () -> this.getCurrentPiece(), TetrisPiece::moveLeft);
+        inputHandler.bindKey("LEFT", "moveLeftAction",
+                () -> this.getCurrentPiece(), TetrisPiece::moveLeft);
+        inputHandler.bindKey("A", "moveLeftAction",
+                () -> this.getCurrentPiece(), TetrisPiece::moveLeft);
 
-        inputHandler.bindKey("DOWN", "moveDownAction", () -> this.getCurrentPiece(), TetrisPiece::moveDown);
-        inputHandler.bindKey("S", "moveDownAction", () -> this.getCurrentPiece(), TetrisPiece::moveDown);
+        inputHandler.bindKey("DOWN", "moveDownAction",
+                () -> this.getCurrentPiece(), TetrisPiece::moveDown);
+        inputHandler.bindKey("S", "moveDownAction",
+                () -> this.getCurrentPiece(), TetrisPiece::moveDown);
+
+        inputHandler.bindKey("X", "rotateCwAction",
+                () -> this.getCurrentPiece(), TetrisPiece::rotateClockwise);
+        inputHandler.bindKey("Z", "rotateCcwAction",
+                () -> this.getCurrentPiece(), TetrisPiece::rotateCounterClockwise);
     }
 
     @Override
