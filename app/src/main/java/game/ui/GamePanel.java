@@ -32,10 +32,13 @@ public class GamePanel extends JPanel implements ActionListener {
         inputHandler = new InputHandler(this);
 
         inputHandler.bindKey("RIGHT", "moveRightAction", () -> this.getCurrentPiece(), TetrisPiece::moveRight);
+        inputHandler.bindKey("D", "moveRightAction", () -> this.getCurrentPiece(), TetrisPiece::moveRight);
 
         inputHandler.bindKey("LEFT", "moveLeftAction", () -> this.getCurrentPiece(), TetrisPiece::moveLeft);
+        inputHandler.bindKey("A", "moveLeftAction", () -> this.getCurrentPiece(), TetrisPiece::moveLeft);
 
         inputHandler.bindKey("DOWN", "moveDownAction", () -> this.getCurrentPiece(), TetrisPiece::moveDown);
+        inputHandler.bindKey("S", "moveDownAction", () -> this.getCurrentPiece(), TetrisPiece::moveDown);
     }
 
     @Override
