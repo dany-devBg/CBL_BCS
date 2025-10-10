@@ -1,12 +1,12 @@
 package game.input;
 
+import game.ui.TetrisPiece;
 import java.awt.event.ActionEvent;
+import java.util.function.Consumer;
 import java.util.function.Supplier;
-
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
-
-import game.ui.TetrisPiece;
+import javax.swing.KeyStroke;
 
 public class InputHandler {
 
@@ -16,58 +16,20 @@ public class InputHandler {
         this.panel = panel;
     }
 
-    public class MoveLeftAction extends AbstractAction {
-        private Supplier<TetrisPiece> pieceSupplier;
-
-        public MoveLeftAction(Supplier<TetrisPiece> pieceSupplier) {
-            this.pieceSupplier = pieceSupplier;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            TetrisPiece tetrisPiece = pieceSupplier.get();
-            if (tetrisPiece != null) {
-                tetrisPiece.moveLeft();
-                panel.repaint();
+    public void bindKey(String keyStroke, String actionName, Supplier<TetrisPiece> pieceSupplier,
+            Consumer<TetrisPiece> action) {
+        panel.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW)
+                .put(KeyStroke.getKeyStroke(keyStroke), actionName);
+        panel.getActionMap().put(actionName, new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                TetrisPiece tetrisPiece = pieceSupplier.get();
+                if (tetrisPiece != null) {
+                    action.accept(tetrisPiece);
+                    panel.repaint();
+                }
             }
-        }
-
-    }
-
-    public class MoveRightAction extends AbstractAction {
-        private Supplier<TetrisPiece> pieceSupplier;
-
-        public MoveRightAction(Supplier<TetrisPiece> pieceSupplier) {
-            this.pieceSupplier = pieceSupplier;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            TetrisPiece tetrisPiece = pieceSupplier.get();
-            if (tetrisPiece != null) {
-                tetrisPiece.moveRight();
-                panel.repaint();
-            }
-        }
-
-    }
-
-    public class MoveDownAction extends AbstractAction {
-        private Supplier<TetrisPiece> pieceSupplier;
-
-        public MoveDownAction(Supplier<TetrisPiece> pieceSupplier) {
-            this.pieceSupplier = pieceSupplier;
-        }
-
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            TetrisPiece tetrisPiece = pieceSupplier.get();
-            if (tetrisPiece != null) {
-                tetrisPiece.moveDown();
-                panel.repaint();
-            }
-        }
-
+        });
     }
 
 }
