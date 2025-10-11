@@ -3,7 +3,7 @@ package game.ui;
 import java.io.Console;
 
 public class Board {
-    public static final int ROWS = 18;
+    public static final int ROWS = 20;
     public static final int COLS = 10;
 
     private boolean[][] grid = new boolean[ROWS][COLS];

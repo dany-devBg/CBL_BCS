@@ -12,9 +12,9 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener {
-    public static final int ROWS = 18;
+    public static final int ROWS = 20;
     public static final int COLS = 10;
-    public static final int BOX_SIZE = 45;
+    public static final int BOX_SIZE = 40;
     private int topLeftX;
     private int topLeftY;
 
