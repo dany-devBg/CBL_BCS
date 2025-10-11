@@ -32,10 +32,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.topLeftX = (GameFrame.WINDOW_WIDTH - BOX_SIZE * COLS) / 2;
         this.topLeftY = (GameFrame.WINDOW_HEIGHT - BOX_SIZE * ROWS) / 2;
 
-        controller = new GameController(this);
-
         timer = new Timer(1000, this);
-        timer.start();
 
         inputHandler = new InputHandler(this);
 
@@ -72,6 +69,11 @@ public class GamePanel extends JPanel implements ActionListener {
         inputHandler.bindKey("Z", "rotateCcwAction",
                 () -> controller.getCurrentPiece(),
                 piece -> controller.tryRotate(piece, false));
+    }
+
+    public void startGame() {
+        controller = new GameController(this);
+        timer.start();
     }
 
     @Override
