@@ -1,8 +1,8 @@
 package game.logic;
 
-import game.ui.Board;
+import game.model.Board;
+import game.model.TetrisPiece;
 import game.ui.GamePanel;
-import game.ui.TetrisPiece;
 
 public class GameController {
     private Board board;

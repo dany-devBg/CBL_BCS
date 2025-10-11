@@ -2,6 +2,8 @@ package game.ui;
 
 import game.input.InputHandler;
 import game.logic.GameController;
+import game.model.Board;
+import game.model.TetrisPiece;
 
 import java.awt.Color;
 import java.awt.Dimension;
