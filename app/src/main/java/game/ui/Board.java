@@ -15,7 +15,6 @@ public class Board {
                     int boardX = newX + j;
                     int boardY = newY + i;
 
-                    System.out.println(boardX + ", " + boardY);
                     if (boardX < 0 || boardX >= COLS || boardY >= ROWS) {
                         return false;
                     }
@@ -43,6 +42,34 @@ public class Board {
             }
         }
     }
+
+    public boolean isLineFull(int i) {
+        for (int j = 0; j < COLS; j++) {
+            if (!grid[i][j]) {
+                return false;
+            } 
+        }
+        return true;
+    }
+
+    public void clearFullLine(int i) {
+        for (int j = 0; j < COLS; j++) {
+            grid[i][j] = false;
+        }
+    }
+
+    public void movePieces(int ind) {
+        for (int i = ind; i > -1; i--) {
+            for (int j = 0; j < COLS; j++) {
+                boolean tmp = grid[i][j];
+                grid[i][j] = grid[i + 1][j];
+                grid[i + 1][j] = tmp;
+
+            }
+        }
+    }
+
+    
     
     public boolean[][] getGrid() {
         return grid;
