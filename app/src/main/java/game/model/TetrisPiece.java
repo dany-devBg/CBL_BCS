@@ -1,4 +1,4 @@
-package game.ui;
+package game.model;
 
 import java.awt.Color;
 import java.util.Random;
