@@ -96,13 +96,13 @@ public class GamePanel extends JPanel implements ActionListener {
         }
 
         // Draw locked pieces
-        boolean[][] grid = board.getGrid();
+        Color[][] grid = board.getGrid();
         for (int r = 0; r < ROWS; r++) {
             for (int c = 0; c < COLS; c++) {
-                if (grid[r][c]) {
+                if (grid[r][c] != null) {
                     int drawX = topLeftX + c * BOX_SIZE;
                     int drawY = topLeftY + r * BOX_SIZE;
-                    g2d.setColor(Color.GRAY);
+                    g2d.setColor(grid[r][c]);
                     g2d.fillRect(drawX, drawY, BOX_SIZE, BOX_SIZE);
                 }
             }
