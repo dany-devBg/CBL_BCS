@@ -1,6 +1,9 @@
 package game.ui;
 
 import game.input.InputHandler;
+import game.logic.GameController;
+
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -12,20 +15,22 @@ import javax.swing.Timer;
 public class GamePanel extends JPanel implements ActionListener {
     public static final int ROWS = 20;
     public static final int COLS = 10;
-    public static final int BOX_SIZE = 45;
+    public static final int BOX_SIZE = 40;
     private int topLeftX;
     private int topLeftY;
 
     private Timer timer;
     private TetrisPiece currentPiece;
     private InputHandler inputHandler;
+    GameController controller;
+    private Board board;
 
     public GamePanel() {
 
         this.topLeftX = (GameFrame.WINDOW_WIDTH - BOX_SIZE * COLS) / 2;
         this.topLeftY = (GameFrame.WINDOW_HEIGHT - BOX_SIZE * ROWS) / 2;
 
-        currentPiece = TetrisPiece.randomPiece();
+        controller = new GameController(this);
 
         timer = new Timer(1000, this);
         timer.start();
@@ -33,24 +38,38 @@ public class GamePanel extends JPanel implements ActionListener {
         inputHandler = new InputHandler(this);
 
         inputHandler.bindKey("RIGHT", "moveRightAction",
-                () -> this.getCurrentPiece(), TetrisPiece::moveRight);
+                () -> controller.getCurrentPiece(),
+                piece -> controller.tryMove(piece, piece.getX() + 1,
+                        piece.getY()));
         inputHandler.bindKey("D", "moveRightAction",
-                () -> this.getCurrentPiece(), TetrisPiece::moveRight);
+                () -> controller.getCurrentPiece(),
+                piece -> controller.tryMove(piece, piece.getX() + 1,
+                        piece.getY()));
 
         inputHandler.bindKey("LEFT", "moveLeftAction",
-                () -> this.getCurrentPiece(), TetrisPiece::moveLeft);
+                () -> controller.getCurrentPiece(),
+                piece -> controller.tryMove(piece, piece.getX() - 1,
+                        piece.getY()));
         inputHandler.bindKey("A", "moveLeftAction",
-                () -> this.getCurrentPiece(), TetrisPiece::moveLeft);
+                () -> controller.getCurrentPiece(),
+                piece -> controller.tryMove(piece, piece.getX() - 1,
+                        piece.getY()));
 
         inputHandler.bindKey("DOWN", "moveDownAction",
-                () -> this.getCurrentPiece(), TetrisPiece::moveDown);
+                () -> controller.getCurrentPiece(),
+                piece -> controller.tryMove(piece, piece.getX(),
+                        piece.getY() + 1));
         inputHandler.bindKey("S", "moveDownAction",
-                () -> this.getCurrentPiece(), TetrisPiece::moveDown);
+                () -> controller.getCurrentPiece(),
+                piece -> controller.tryMove(piece, piece.getX(),
+                        piece.getY() + 1));
 
         inputHandler.bindKey("X", "rotateCwAction",
-                () -> this.getCurrentPiece(), TetrisPiece::rotateClockwise);
+                () -> controller.getCurrentPiece(),
+                piece -> controller.tryRotate(piece, true));
         inputHandler.bindKey("Z", "rotateCcwAction",
-                () -> this.getCurrentPiece(), TetrisPiece::rotateCounterClockwise);
+                () -> controller.getCurrentPiece(),
+                piece -> controller.tryRotate(piece, false));
     }
 
     @Override
@@ -62,16 +81,34 @@ public class GamePanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
 
+        TetrisPiece currentPiece = controller.getCurrentPiece();
+        Board board = controller.getBoard();
+
+        // Draw grid
         int y = topLeftY;
-        for (int horz = 0; horz < 20; horz++) {
+        for (int horz = 0; horz < ROWS; horz++) {
             int x = topLeftX;
-            for (int vert = 0; vert < 10; vert++) {
+            for (int vert = 0; vert < COLS; vert++) {
                 g2d.drawRect(x, y, BOX_SIZE, BOX_SIZE);
                 x += BOX_SIZE;
             }
             y += BOX_SIZE;
         }
 
+        // Draw locked pieces
+        boolean[][] grid = board.getGrid();
+        for (int r = 0; r < ROWS; r++) {
+            for (int c = 0; c < COLS; c++) {
+                if (grid[r][c]) {
+                    int drawX = topLeftX + c * BOX_SIZE;
+                    int drawY = topLeftY + r * BOX_SIZE;
+                    g2d.setColor(Color.GRAY);
+                    g2d.fillRect(drawX, drawY, BOX_SIZE, BOX_SIZE);
+                }
+            }
+        }
+
+        // Draw current falling piece
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (currentPiece.getShape()[i][j]) {
@@ -91,17 +128,9 @@ public class GamePanel extends JPanel implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         // Update game state
-        update();
+        controller.update();
         // Repaint the screen
         repaint();
     }
 
-    private void update() {
-        currentPiece.setY(currentPiece.getY() + 1);
-
-    }
-
-    public TetrisPiece getCurrentPiece() {
-        return this.currentPiece;
-    }
 }

@@ -69,7 +69,7 @@ public class TetrisPiece {
         x += 1;
     }
 
-    public void rotateCounterClockwise() {
+    public boolean[][] getRotatedCounterClockwise() {
         int rows = this.shape.length;
         int cols = this.shape[0].length;
         boolean[][] rotated = new boolean[rows][cols];
@@ -80,11 +80,14 @@ public class TetrisPiece {
                 rotated[rows - 1 - i][j] = value;
             }
         }
-
-        this.shape = rotated;
+        return rotated;
     }
 
-    public void rotateClockwise() {
+    public void setShape(boolean[][] newShape) {
+        this.shape = newShape;
+    }
+
+    public boolean[][] getRotatedClockwise() {
         int rows = this.shape.length;
         int cols = this.shape[0].length;
         boolean[][] rotated = new boolean[rows][cols];
@@ -95,8 +98,7 @@ public class TetrisPiece {
                 rotated[i][cols - 1 - j] = value;
             }
         }
-
-        this.shape = rotated;
+        return rotated;
     }
 
 }
