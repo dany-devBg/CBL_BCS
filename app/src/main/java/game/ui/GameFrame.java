@@ -7,7 +7,7 @@ import javax.swing.JPanel;
 public class GameFrame extends JFrame {
 
     public static final int WINDOW_WIDTH = 700;
-    public static final int WINDOW_HEIGHT = 1000;
+    public static final int WINDOW_HEIGHT = 900;
     private CardLayout cardLayout;
     private JPanel mainPanel;
 
