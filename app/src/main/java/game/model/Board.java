@@ -47,6 +47,33 @@ public class Board {
         }
     }
 
+    public boolean isLineFull(int i) {
+        for (int j = 0; j < COLS; j++) {
+            System.out.println(j);
+            if (grid[i][j] == null) {
+                return false;
+            } 
+        }
+        return true;
+    }
+
+    public void clearFullLine(int i) {
+        for (int j = 0; j < COLS; j++) {
+            grid[i][j] = null;
+        }
+    }
+
+    public void movePieces(int ind) {
+        for (int i = ind; i > -1; i--) {
+            for (int j = 0; j < COLS; j++) {
+                Color tmp = grid[i][j];
+                grid[i][j] = grid[i + 1][j];
+                grid[i + 1][j] = tmp;
+
+            }
+        }
+    }
+    
     public Color[][] getGrid() {
         return grid;
     }

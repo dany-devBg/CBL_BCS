@@ -9,6 +9,9 @@ public class GameController {
     private TetrisPiece currentPiece;
     private GamePanel panel; // for repaint
 
+    private static final int ROWS = GamePanel.ROWS;
+    private static final int COLS = GamePanel.COLS;
+
     public GameController(GamePanel panel) {
         this.panel = panel;
         this.board = new Board();
@@ -40,7 +43,17 @@ public class GameController {
             currentPiece.setY(currentPiece.getY() + 1);
         } else {
             board.placePiece(currentPiece);
+            clearFullLines();
             currentPiece = TetrisPiece.randomPiece();
+        }
+    }
+    
+    public void clearFullLines() {
+        for (int i = ROWS - 1; i > -1; i--) {
+            while (board.isLineFull(i)) {
+                board.clearFullLine(i);
+                board.movePieces(i - 1);
+            }
         }
     }
 
