@@ -1,7 +1,9 @@
-package game.ui;
+package game.model;
 
 import java.awt.Color;
 import java.io.Console;
+
+import game.ui.GamePanel;
 
 public class Board {
     public static final int ROWS = GamePanel.ROWS;

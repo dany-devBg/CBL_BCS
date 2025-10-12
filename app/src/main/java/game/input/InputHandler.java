@@ -1,12 +1,13 @@
 package game.input;
 
-import game.ui.TetrisPiece;
 import java.awt.event.ActionEvent;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+
+import game.model.TetrisPiece;
 
 public class InputHandler {
 
