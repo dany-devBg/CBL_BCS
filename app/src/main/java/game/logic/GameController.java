@@ -7,6 +7,7 @@ import game.ui.GamePanel;
 public class GameController {
     private Board board;
     private TetrisPiece currentPiece;
+    private TetrisPiece nextPiece;
     private GamePanel panel; // for repaint
 
     private static final int ROWS = GamePanel.ROWS;
@@ -16,6 +17,7 @@ public class GameController {
         this.panel = panel;
         this.board = new Board();
         this.currentPiece = TetrisPiece.randomPiece();
+        this.nextPiece = TetrisPiece.randomPiece();
     }
 
     public void tryMove(TetrisPiece piece, int newX, int newY) {
@@ -44,7 +46,8 @@ public class GameController {
         } else {
             board.placePiece(currentPiece);
             clearFullLines();
-            currentPiece = TetrisPiece.randomPiece();
+            currentPiece = nextPiece;
+            nextPiece = TetrisPiece.randomPiece();
         }
     }
     
@@ -60,6 +63,10 @@ public class GameController {
     // Getters
     public TetrisPiece getCurrentPiece() {
         return currentPiece;
+    }
+
+    public TetrisPiece getNextPiece() {
+        return nextPiece;
     }
 
     public Board getBoard() {
