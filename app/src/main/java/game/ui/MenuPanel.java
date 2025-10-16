@@ -21,16 +21,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
-public class MenuPanel extends JPanel{
+public class MenuPanel extends JPanel {
 
     private int titleColorIndex = 0;
     private Color[] neonColors = {
-        new Color(255, 20, 147),   // Pink
-        new Color(57, 255, 20),    // Green
-        new Color(0, 255, 255),    // Cyan
-        new Color(255, 165, 0),    // Orange
-        new Color(255, 255, 0),    // Yellow
-        new Color(148, 0, 211)     // Purple
+            new Color(255, 20, 147), // Pink
+            new Color(57, 255, 20), // Green
+            new Color(0, 255, 255), // Cyan
+            new Color(255, 165, 0), // Orange
+            new Color(255, 255, 0), // Yellow
+            new Color(148, 0, 211) // Purple
     };
 
     public MenuPanel(GameFrame frame) {
@@ -67,7 +67,9 @@ public class MenuPanel extends JPanel{
         startButton.setForeground(Color.WHITE);
         startButton.setBackground(Color.BLACK);
         startButton.setCursor(new Cursor(Cursor.HAND_CURSOR));
-        startButton.addActionListener((ActionEvent e) -> frame.showCard("Game"));
+        startButton.addActionListener((ActionEvent e) -> {
+            frame.showGame();
+        });
         startButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         startButton.addMouseListener(new MouseAdapter() {
             @Override
@@ -97,7 +99,7 @@ public class MenuPanel extends JPanel{
                 scoreboardButton.setBackground(Color.WHITE);
                 scoreboardButton.setForeground(Color.BLACK);
             }
-            
+
             @Override
             public void mouseExited(MouseEvent e) {
                 scoreboardButton.setBackground(Color.BLACK);
@@ -111,5 +113,5 @@ public class MenuPanel extends JPanel{
         this.add(buttonPanel);
         this.add(Box.createVerticalGlue());
     }
-    
+
 }

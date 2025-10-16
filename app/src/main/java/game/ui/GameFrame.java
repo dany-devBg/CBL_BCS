@@ -10,6 +10,9 @@ public class GameFrame extends JFrame {
     public static final int WINDOW_HEIGHT = 900;
     private CardLayout cardLayout;
     private JPanel mainPanel;
+    private MenuPanel menuPanel;
+    private GamePanel gamePanel;
+    private GameOverPanel gameOverPanel;
 
     public GameFrame() {
         // Game title
@@ -30,9 +33,13 @@ public class GameFrame extends JFrame {
         cardLayout = new CardLayout();
         mainPanel = new JPanel(cardLayout);
 
-        mainPanel.add(new MenuPanel(this), "Menu");
-        mainPanel.add(new GamePanel(this), "Game");
-        mainPanel.add(new GameOverPanel(this), "GameOver");
+        menuPanel = new MenuPanel(this);
+        gamePanel = new GamePanel();
+        gameOverPanel = new GameOverPanel(this);
+
+        mainPanel.add(menuPanel, "Menu");
+        mainPanel.add(gamePanel, "Game");
+        mainPanel.add(gameOverPanel, "GameOver");
 
 
         this.add(mainPanel);
@@ -43,6 +50,11 @@ public class GameFrame extends JFrame {
 
     public void showCard(String cardName) {
         cardLayout.show(mainPanel, cardName);
+    }
+
+    public void showGame() {
+        cardLayout.show(mainPanel, "Game");
+        gamePanel.startGame();
     }
 
 }
