@@ -84,17 +84,18 @@ public class GamePanel extends JPanel implements ActionListener {
         return new Dimension(200, 200);
     }
 
-    private void drawCenteredPiece(boolean[][] shape, Graphics2D g2d, int previewBoxX, int previewBoxY, int previewBoxSize) {
+    private void drawCenteredPiece(boolean[][] shape, Graphics2D g2d, int previewBoxX, int previewBoxY,
+            int previewBoxSize) {
         int minRow = 4;
         int maxRow = -1;
         int minCol = 4;
         int maxCol = -1;
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[0].length; j++) {
                 if (shape[i][j]) {
                     if (i < minRow) {
                         minRow = i;
-                    } 
+                    }
                     if (i > maxRow) {
                         maxRow = i;
                     }
@@ -111,13 +112,13 @@ public class GamePanel extends JPanel implements ActionListener {
         int shapeWidth = (maxCol - minCol + 1) * BOX_SIZE;
         int shapeHeight = (maxRow - minRow + 1) * BOX_SIZE;
 
-        //Center the shape within the preview box
+        // Center the shape within the preview box
         int offsetX = previewBoxX + (previewBoxSize - shapeWidth) / 2;
         int offsetY = previewBoxY + (previewBoxSize - shapeHeight) / 2;
 
-        //Draw each block of the shape
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        // Draw each block of the shape
+        for (int i = 0; i < shape.length; i++) {
+            for (int j = 0; j < shape[0].length; j++) {
                 if (shape[i][j]) {
                     int drawX = offsetX + (j - minCol) * BOX_SIZE;
                     int drawY = offsetY + (i - minRow) * BOX_SIZE;
@@ -128,8 +129,8 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     private void drawNextPiece(Graphics2D g2d) {
-        int previewBoxX = topLeftX + (COLS + 2) * BOX_SIZE;  // a bit to the right of the main grid
-        int previewBoxY = topLeftY + 27;           // some padding from the top
+        int previewBoxX = topLeftX + (COLS + 2) * BOX_SIZE; // a bit to the right of the main grid
+        int previewBoxY = topLeftY + 27; // some padding from the top
 
         g2d.setColor(Color.BLACK);
         Font originalFont = g2d.getFont();
@@ -154,9 +155,9 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private void drawGrid(Graphics2D g2d) {
         int y = topLeftY;
-        for (int horz = 0; horz < ROWS; horz++) {
+        for (int row = 0; row < ROWS; row++) {
             int x = topLeftX;
-            for (int vert = 0; vert < COLS; vert++) {
+            for (int col = 0; col < COLS; col++) {
                 g2d.drawRect(x, y, BOX_SIZE, BOX_SIZE);
                 x += BOX_SIZE;
             }
@@ -180,8 +181,8 @@ public class GamePanel extends JPanel implements ActionListener {
 
     private void drawFallingPiece(Graphics2D g2d) {
         TetrisPiece currentPiece = controller.getCurrentPiece();
-        for (int i = 0; i < 4; i++) {
-            for (int j = 0; j < 4; j++) {
+        for (int i = 0; i < currentPiece.getShape().length; i++) {
+            for (int j = 0; j < currentPiece.getShape()[0].length; j++) {
                 if (currentPiece.getShape()[i][j]) {
                     int pieceX = topLeftX + (currentPiece.getX() + j) * BOX_SIZE;
                     int pieceY = topLeftY + (currentPiece.getY() + i) * BOX_SIZE;
@@ -227,4 +228,3 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
 }
-
