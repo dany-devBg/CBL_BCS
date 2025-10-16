@@ -80,13 +80,12 @@ public class GameController {
     }
 
     public void update() {
-        // Move piece down
-        int newY = currentPiece.getY() + 1;
 
         // Check if the new position is valid
-        if (board.isValidPosition(currentPiece, currentPiece.getX(), newY,
+        if (board.isValidPosition(currentPiece, currentPiece.getX(), currentPiece.getY()
+                + 1,
                 currentPiece.getShape())) {
-            currentPiece.setY(currentPiece.getY() + 1);
+            currentPiece.moveDown();
         } else {
             board.placePiece(currentPiece);
             clearFullLines();
