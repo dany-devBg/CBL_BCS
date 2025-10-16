@@ -31,7 +31,7 @@ public class GameFrame extends JFrame {
         mainPanel = new JPanel(cardLayout);
 
         mainPanel.add(new MenuPanel(this), "Menu");
-        mainPanel.add(new GamePanel(), "Game");
+        mainPanel.add(new GamePanel(this), "Game");
         mainPanel.add(new GameOverPanel(this), "GameOver");
 
 

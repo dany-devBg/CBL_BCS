@@ -13,6 +13,8 @@ public class GameController {
     private static final int ROWS = GamePanel.ROWS;
     private static final int COLS = GamePanel.COLS;
 
+    private boolean gameOver = false;
+
     public GameController(GamePanel panel) {
         this.panel = panel;
         this.board = new Board();
@@ -38,16 +40,26 @@ public class GameController {
     }
 
     public void update() {
+        // Move piece down
         int newY = currentPiece.getY() + 1;
 
+        // Check if the new position is valid
         if (board.isValidPosition(currentPiece, currentPiece.getX(), newY,
                 currentPiece.getShape())) {
             currentPiece.setY(currentPiece.getY() + 1);
         } else {
             board.placePiece(currentPiece);
             clearFullLines();
+
+            //Spawn new piece
             currentPiece = nextPiece;
             nextPiece = TetrisPiece.randomPiece();
+
+            // Check for game over
+            if (!board.isValidPosition(currentPiece, currentPiece.getX(), currentPiece.getY(), currentPiece.getShape())) {
+                gameOver = true;
+                return;
+            }
         }
     }
     
@@ -58,6 +70,18 @@ public class GameController {
                 board.movePieces(i - 1);
             }
         }
+    }
+
+    public boolean isGameOver() {
+        return gameOver;
+    }
+
+    public void resetGame() {
+        board = new Board();
+        currentPiece = TetrisPiece.randomPiece();
+        nextPiece = TetrisPiece.randomPiece();
+        gameOver = false;
+        panel.repaint();
     }
 
     // Getters

@@ -26,7 +26,11 @@ public class GamePanel extends JPanel implements ActionListener {
     private InputHandler inputHandler;
     GameController controller;
 
-    public GamePanel() {
+    GameFrame frame;
+
+    public GamePanel(GameFrame frame) {
+
+        this.frame = frame;
 
         this.topLeftX = (GameFrame.WINDOW_WIDTH - BOX_SIZE * COLS) / 6;
         this.topLeftY = (GameFrame.WINDOW_HEIGHT - BOX_SIZE * ROWS) / 2;
@@ -79,14 +83,25 @@ public class GamePanel extends JPanel implements ActionListener {
     }
 
     private void drawCenteredPiece(boolean[][] shape, Graphics2D g2d, int previewBoxX, int previewBoxY, int previewBoxSize) {
-        int minRow = 4, maxRow = -1, minCol = 4, maxCol = -1;
+        int minRow = 4;
+        int maxRow = -1;
+        int minCol = 4;
+        int maxCol = -1;
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (shape[i][j]) {
-                    if (i < minRow) minRow = i;
-                    if (i > maxRow) maxRow = i;
-                    if (j < minCol) minCol = j;
-                    if (j > maxCol) maxCol = j;
+                    if (i < minRow) {
+                        minRow = i;
+                    } 
+                    if (i > maxRow) {
+                        maxRow = i;
+                    }
+                    if (j < minCol) {
+                        minCol = j;
+                    }
+                    if (j > maxCol) {
+                        maxCol = j;
+                    }
                 }
             }
         }
@@ -94,11 +109,11 @@ public class GamePanel extends JPanel implements ActionListener {
         int shapeWidth = (maxCol - minCol + 1) * BOX_SIZE;
         int shapeHeight = (maxRow - minRow + 1) * BOX_SIZE;
 
-        // --- Step 2: Center the shape within the preview box ---
+        //Center the shape within the preview box
         int offsetX = previewBoxX + (previewBoxSize - shapeWidth) / 2;
         int offsetY = previewBoxY + (previewBoxSize - shapeHeight) / 2;
 
-        // --- Step 3: Draw each block of the shape ---
+        //Draw each block of the shape
         for (int i = 0; i < 4; i++) {
             for (int j = 0; j < 4; j++) {
                 if (shape[i][j]) {
@@ -113,7 +128,6 @@ public class GamePanel extends JPanel implements ActionListener {
     private void drawNextPiece(Graphics2D g2d) {
         int previewBoxX = topLeftX + (COLS + 2) * BOX_SIZE;  // a bit to the right of the main grid
         int previewBoxY = topLeftY + 27;           // some padding from the top
-        int previewBoxSize = BOX_SIZE * 4; // 4x4 preview grid
 
         g2d.setColor(Color.BLACK);
         Font originalFont = g2d.getFont();
@@ -182,9 +196,6 @@ public class GamePanel extends JPanel implements ActionListener {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g.create();
 
-        TetrisPiece currentPiece = controller.getCurrentPiece();
-        Board board = controller.getBoard();
-
         // Draw grid
         drawGrid(g2d);
 
@@ -204,6 +215,11 @@ public class GamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // Update game state
         controller.update();
+        if (controller.isGameOver()) {
+            timer.stop();
+            frame.showCard("GameOver");
+            controller.resetGame();
+        }
         // Repaint the screen
         repaint();
     }
