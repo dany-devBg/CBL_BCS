@@ -146,7 +146,7 @@ public class GameController {
             case 1:
                 score += 100 * level;
                 break;
-                case 2:
+            case 2:
                 score += 300 * level;
                 break;
             case 3:
