@@ -37,7 +37,7 @@ public class GameController {
         this.frameTimer = new Timer(16, panel);
         this.frameTimer.start();
 
-        this.gravityTimer = new Timer(1000, e -> this.currentPiece.moveDown());
+        this.gravityTimer = new Timer(800, e -> this.currentPiece.moveDown());
         this.gravityTimer.start();
     }
 
@@ -149,7 +149,7 @@ public class GameController {
     }
 
     public int getSpeedDelay() {
-        return Math.max(1000 - (level - 1) * 100, 100);
+        return Math.max(800 - (level - 1) * 50, 100);
     }
 
     // Getters
