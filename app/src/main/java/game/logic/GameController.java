@@ -21,6 +21,7 @@ public class GameController {
 
     private int level = 1;
     private int linesCleared = 0;
+    private int score = 0;
 
     public GameController(GamePanel panel) {
         this.panel = panel;
@@ -91,6 +92,7 @@ public class GameController {
             currentPiece.moveDown();
         } else {
             board.placePiece(currentPiece);
+            updateScore(0);
             clearFullLines();
 
             // Spawn new piece
@@ -107,13 +109,16 @@ public class GameController {
     }
 
     public void clearFullLines() {
+        int newLinesCleared = 0;
         for (int i = ROWS - 1; i > -1; i--) {
             while (board.isLineFull(i)) {
                 board.clearFullLine(i);
                 board.movePieces(i - 1);
                 linesCleared++;
+                newLinesCleared++;
             }
         }
+        updateScore(newLinesCleared);
         level = linesCleared / 10 + 1;
     }
 
@@ -131,6 +136,27 @@ public class GameController {
 
     public int getSpeedDelay() {
         return Math.max(1000 - (level - 1) * 100, 100);
+    }
+
+    public void updateScore(int lines) {
+        switch (lines) {
+            case 0:
+                score += 10 * level; // Placed piece
+                break;
+            case 1:
+                score += 100 * level;
+                break;
+            case 2:
+                score += 300 * level;
+                break;
+            case 3:
+                score += 500 * level;
+                break;
+            case 4:
+                score += 800 * level;
+            default:
+                break;
+        }
     }
 
     // Getters
