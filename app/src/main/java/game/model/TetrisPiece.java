@@ -3,6 +3,8 @@ package game.model;
 import java.awt.Color;
 import java.util.Random;
 
+import game.model.Tetromino.Rotation;
+
 public class TetrisPiece {
     // A 4x4 matrix representing the shape of the piece
     private boolean[][] shape;
@@ -11,26 +13,23 @@ public class TetrisPiece {
     private int y;
     // Color of the piece
     private Color color;
+    private Rotation rotation;
+    private Tetromino type;
 
-    public TetrisPiece(boolean[][] shape, Color color) {
-        this.shape = shape;
+    public TetrisPiece(Tetromino tetromino) {
+        this.shape = tetromino.getShape();
         this.x = 3;
         this.y = 0;
-        this.color = color;
-    }
-
-    public TetrisPiece(boolean[][] shape, int x, int y) {
-        this.shape = shape;
-        this.x = x;
-        this.y = y;
-        this.color = color;
+        this.color = tetromino.getColor();
+        this.rotation = Rotation.SPAWN;
+        this.type = tetromino;
     }
 
     public static TetrisPiece randomPiece() {
         Tetromino[] values = Tetromino.values();
         int index = new Random().nextInt(values.length);
         Tetromino tetromino = values[index];
-        return new TetrisPiece(tetromino.getShape(), tetromino.getColor());
+        return new TetrisPiece(tetromino);
     }
 
     public boolean[][] getShape() {
@@ -55,6 +54,18 @@ public class TetrisPiece {
 
     public Color getColor() {
         return this.color;
+    }
+
+    public Rotation getRotation() {
+        return this.rotation;
+    }
+
+    public void setRotation(Rotation rotation) {
+        this.rotation = rotation;
+    }
+
+    public Tetromino getType() {
+        return this.type;
     }
 
     public void moveDown() {

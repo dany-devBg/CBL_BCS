@@ -2,6 +2,10 @@ package game.logic;
 
 import game.model.Board;
 import game.model.TetrisPiece;
+import game.model.Tetromino;
+import game.model.SRS.Offset;
+import game.model.SRS;
+import game.model.Tetromino.Rotation;
 import game.ui.GamePanel;
 
 public class GameController {
@@ -31,38 +35,74 @@ public class GameController {
     }
 
     public void tryRotate(TetrisPiece piece, boolean clockwise) {
-        boolean[][] rotated = clockwise ? piece.getRotatedClockwise()
-                : piece.getRotatedCounterClockwise();
-        if (board.isValidPosition(piece, piece.getX(), piece.getY(), rotated)) {
-            piece.setShape(rotated);
-            panel.repaint();
+        if (currentPiece.getType() == Tetromino.O) {
+            return;
         }
+
+        boolean[][] rotated;
+        Offset[] rotationsOffset = {};
+        Rotation to;
+        Rotation from = currentPiece.getRotation();
+
+        if (clockwise) {
+            rotated = piece.getRotatedClockwise();
+            to = currentPiece.getRotation().clockwise();
+        } else {
+            rotated = piece.getRotatedCounterClockwise();
+            to = currentPiece.getRotation().counterClockwise();
+
+        }
+
+        switch (currentPiece.getType()) {
+            case I: // I has special rotation rules
+                rotationsOffset = SRS.getIKicks(from, to);
+                break;
+            default:
+                rotationsOffset = SRS.getJLSTZKicks(from, to);
+                break;
+        }
+
+        for (Offset offset : rotationsOffset) {
+            int testX = currentPiece.getX() + offset.x();
+            int testY = currentPiece.getY() + offset.y();
+
+            if (board.isValidPosition(piece, testX, testY, rotated)) {
+                piece.setShape(rotated);
+                piece.setX(testX);
+                piece.setY(testY);
+                piece.setRotation(to);
+                panel.repaint();
+
+                return;
+            }
+        }
+
     }
 
     public void update() {
-        // Move piece down
-        int newY = currentPiece.getY() + 1;
 
         // Check if the new position is valid
-        if (board.isValidPosition(currentPiece, currentPiece.getX(), newY,
+        if (board.isValidPosition(currentPiece, currentPiece.getX(), currentPiece.getY()
+                + 1,
                 currentPiece.getShape())) {
-            currentPiece.setY(currentPiece.getY() + 1);
+            currentPiece.moveDown();
         } else {
             board.placePiece(currentPiece);
             clearFullLines();
 
-            //Spawn new piece
+            // Spawn new piece
             currentPiece = nextPiece;
             nextPiece = TetrisPiece.randomPiece();
 
             // Check for game over
-            if (!board.isValidPosition(currentPiece, currentPiece.getX(), currentPiece.getY(), currentPiece.getShape())) {
+            if (!board.isValidPosition(currentPiece, currentPiece.getX(), currentPiece.getY(),
+                    currentPiece.getShape())) {
                 gameOver = true;
                 return;
             }
         }
     }
-    
+
     public void clearFullLines() {
         for (int i = ROWS - 1; i > -1; i--) {
             while (board.isLineFull(i)) {
@@ -77,23 +117,23 @@ public class GameController {
     }
 
     public void resetGame() {
-        board = new Board();
-        currentPiece = TetrisPiece.randomPiece();
-        nextPiece = TetrisPiece.randomPiece();
-        gameOver = false;
-        panel.repaint();
+        this.board = new Board();
+        this.currentPiece = TetrisPiece.randomPiece();
+        this.nextPiece = TetrisPiece.randomPiece();
+        this.gameOver = false;
+        this.panel.repaint();
     }
 
     // Getters
     public TetrisPiece getCurrentPiece() {
-        return currentPiece;
+        return this.currentPiece;
     }
 
     public TetrisPiece getNextPiece() {
-        return nextPiece;
+        return this.nextPiece;
     }
 
     public Board getBoard() {
-        return board;
+        return this.board;
     }
 }

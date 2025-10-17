@@ -49,10 +49,9 @@ public class Board {
 
     public boolean isLineFull(int i) {
         for (int j = 0; j < COLS; j++) {
-            System.out.println(j);
             if (grid[i][j] == null) {
                 return false;
-            } 
+            }
         }
         return true;
     }
@@ -73,7 +72,7 @@ public class Board {
             }
         }
     }
-    
+
     public Color[][] getGrid() {
         return grid;
     }
