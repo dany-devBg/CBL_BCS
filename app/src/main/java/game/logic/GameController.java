@@ -109,13 +109,16 @@ public class GameController {
     }
 
     public void clearFullLines() {
+        int newLinesCleared = 0;
         for (int i = ROWS - 1; i > -1; i--) {
             while (board.isLineFull(i)) {
                 board.clearFullLine(i);
                 board.movePieces(i - 1);
                 linesCleared++;
+                newLinesCleared++;
             }
         }
+        updateScore(newLinesCleared);
         level = linesCleared / 10 + 1;
     }
 
@@ -139,6 +142,9 @@ public class GameController {
         switch (lines) {
             case 0:
                 score += 10 * level; // Placed piece
+                break;
+            case 1:
+                score += 100 * level;
                 break;
             default:
                 break;
