@@ -19,6 +19,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public static final int ROWS = 20;
     public static final int COLS = 10;
     public static final int BOX_SIZE = 40;
+    private final int frameDelay = 16;
     private int topLeftX;
     private int topLeftY;
 
@@ -35,7 +36,7 @@ public class GamePanel extends JPanel implements ActionListener {
         this.topLeftX = (GameFrame.WINDOW_WIDTH - BOX_SIZE * COLS) / 6;
         this.topLeftY = (GameFrame.WINDOW_HEIGHT - BOX_SIZE * ROWS) / 2;
 
-        timer = new Timer(1000, this);
+        timer = new Timer(frameDelay, this);
 
         inputHandler = new InputHandler(this);
 
@@ -72,6 +73,9 @@ public class GamePanel extends JPanel implements ActionListener {
         inputHandler.bindKey("Z", "rotateCcwAction",
                 () -> controller.getCurrentPiece(),
                 piece -> controller.tryRotate(piece, false));
+        inputHandler.bindKey("SPACE", "hardDropAction",
+                () -> controller.getCurrentPiece(),
+                piece -> controller.hardDrop(piece));
     }
 
     public void startGame() {

@@ -35,7 +35,7 @@ public class GameController {
     }
 
     public void tryRotate(TetrisPiece piece, boolean clockwise) {
-        if (currentPiece.getType() == Tetromino.O) {
+        if (piece.getType() == Tetromino.O) {
             return;
         }
 
@@ -77,6 +77,14 @@ public class GameController {
             }
         }
 
+    }
+
+    public void hardDrop(TetrisPiece piece) {
+        while (board.isValidPosition(piece, piece.getX(), piece.getY() + 1, piece.getShape())) {
+            piece.moveDown();
+        }
+
+        panel.repaint();
     }
 
     public void update() {
