@@ -1,5 +1,7 @@
 package game.logic;
 
+import javax.swing.Timer;
+
 import game.model.Board;
 import game.model.TetrisPiece;
 import game.model.Tetromino;
@@ -13,6 +15,8 @@ public class GameController {
     private TetrisPiece currentPiece;
     private TetrisPiece nextPiece;
     private GamePanel panel; // for repaint
+    private Timer frameTimer;
+    private Timer gravityTimer;
 
     private static final int ROWS = GamePanel.ROWS;
     private static final int COLS = GamePanel.COLS;
@@ -29,11 +33,18 @@ public class GameController {
         this.nextPiece = TetrisPiece.randomPiece();
     }
 
+    public void startGame() {
+        this.frameTimer = new Timer(16, panel);
+        this.frameTimer.start();
+
+        this.gravityTimer = new Timer(1000, e -> this.currentPiece.moveDown());
+        this.gravityTimer.start();
+    }
+
     public void tryMove(TetrisPiece piece, int newX, int newY) {
         if (board.isValidPosition(piece, newX, newY, piece.getShape())) {
             piece.setX(newX);
             piece.setY(newY);
-            panel.repaint();
         }
     }
 
@@ -74,7 +85,6 @@ public class GameController {
                 piece.setX(testX);
                 piece.setY(testY);
                 piece.setRotation(to);
-                panel.repaint();
 
                 return;
             }
@@ -86,18 +96,15 @@ public class GameController {
         while (board.isValidPosition(piece, piece.getX(), piece.getY() + 1, piece.getShape())) {
             piece.moveDown();
         }
-
-        panel.repaint();
     }
 
     public void update() {
 
         // Check if the new position is valid
-        if (board.isValidPosition(currentPiece, currentPiece.getX(), currentPiece.getY()
+        if (!board.isValidPosition(currentPiece, currentPiece.getX(), currentPiece.getY()
                 + 1,
                 currentPiece.getShape())) {
-            currentPiece.moveDown();
-        } else {
+
             board.placePiece(currentPiece);
             clearFullLines();
 
@@ -109,6 +116,8 @@ public class GameController {
             if (!board.isValidPosition(currentPiece, currentPiece.getX(), currentPiece.getY(),
                     currentPiece.getShape())) {
                 gameOver = true;
+                frameTimer.stop();
+                gravityTimer.stop();
                 return;
             }
         }
@@ -120,6 +129,8 @@ public class GameController {
                 board.clearFullLine(i);
                 board.movePieces(i - 1);
                 linesCleared++;
+                gravityTimer.setDelay(this.getSpeedDelay());
+
             }
         }
         level = linesCleared / 10 + 1;

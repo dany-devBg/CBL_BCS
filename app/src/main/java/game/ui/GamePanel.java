@@ -13,17 +13,14 @@ import java.awt.Graphics2D;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
 public class GamePanel extends JPanel implements ActionListener {
     public static final int ROWS = 20;
     public static final int COLS = 10;
     public static final int BOX_SIZE = 40;
-    private final int frameDelay = 16;
     private int topLeftX;
     private int topLeftY;
 
-    private Timer timer;
     private InputHandler inputHandler;
     GameController controller;
 
@@ -35,8 +32,6 @@ public class GamePanel extends JPanel implements ActionListener {
 
         this.topLeftX = (GameFrame.WINDOW_WIDTH - BOX_SIZE * COLS) / 6;
         this.topLeftY = (GameFrame.WINDOW_HEIGHT - BOX_SIZE * ROWS) / 2;
-
-        timer = new Timer(frameDelay, this);
 
         inputHandler = new InputHandler(this);
 
@@ -80,7 +75,7 @@ public class GamePanel extends JPanel implements ActionListener {
 
     public void startGame() {
         controller = new GameController(this);
-        timer.start();
+        controller.startGame();
     }
 
     @Override
@@ -222,9 +217,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // Update game state
         controller.update();
-        timer.setDelay(controller.getSpeedDelay());
         if (controller.isGameOver()) {
-            timer.stop();
             frame.showCard("GameOver");
             controller.resetGame();
         }
