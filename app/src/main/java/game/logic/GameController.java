@@ -19,6 +19,9 @@ public class GameController {
 
     private boolean gameOver = false;
 
+    private int level = 1;
+    private int linesCleared = 0;
+
     public GameController(GamePanel panel) {
         this.panel = panel;
         this.board = new Board();
@@ -108,8 +111,10 @@ public class GameController {
             while (board.isLineFull(i)) {
                 board.clearFullLine(i);
                 board.movePieces(i - 1);
+                linesCleared++;
             }
         }
+        level = linesCleared / 10 + 1;
     }
 
     public boolean isGameOver() {
@@ -122,6 +127,10 @@ public class GameController {
         this.nextPiece = TetrisPiece.randomPiece();
         this.gameOver = false;
         this.panel.repaint();
+    }
+
+    public int getSpeedDelay() {
+        return Math.max(1000 - (level - 1) * 100, 100);
     }
 
     // Getters

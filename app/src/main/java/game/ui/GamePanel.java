@@ -218,6 +218,7 @@ public class GamePanel extends JPanel implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         // Update game state
         controller.update();
+        timer.setDelay(controller.getSpeedDelay());
         if (controller.isGameOver()) {
             timer.stop();
             frame.showCard("GameOver");
